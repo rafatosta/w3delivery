@@ -9,3 +9,119 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Company {
+  id          Int           @id @default(autoincrement())
+  name        String
+  slug        String        @unique
+  addressMap  String?
+  address     String?
+  settings    Settings? //um-para-um
+  phone       Phone[] // um-para-muitos
+  socialMedia SocialMedia[] // um-para-muitos
+  typePayment TypePayment[] // um-para-muitos
+  openDays    OpenDays[] // um-para-muitos
+  client      Client[]
+  product     Product[]
+  category    Category[]
+  order       Order[]
+}
+
+model Settings {
+  id             Int     @id @default(autoincrement())
+  primaryColor   String
+  secondaryColor String
+  tertiaryColor  String
+  imagePerfil    String
+  imageBanner    String
+  Company        Company @relation(fields: [companyId], references: [id])
+  companyId      Int     @unique
+}
+
+model Phone {
+  id         Int     @id @default(autoincrement())
+  number     String  @unique
+  isWhatsapp Boolean @default(false)
+  Company    Company @relation(fields: [companyId], references: [id])
+  companyId  Int
+}
+
+model SocialMedia {
+  id        Int     @id @default(autoincrement())
+  name      String
+  url       String
+  Company   Company @relation(fields: [companyId], references: [id])
+  companyId Int
+}
+
+model TypePayment {
+  id          Int     @id @default(autoincrement())
+  icon        String
+  description String
+  Company     Company @relation(fields: [companyId], references: [id])
+  companyId   Int
+}
+
+model OpenDays {
+  id        Int      @id @default(autoincrement())
+  day       String
+  openTime  DateTime
+  closeTime DateTime
+  Company   Company  @relation(fields: [companyId], references: [id])
+  companyId Int      @unique
+}
+
+model Client {
+  id        Int     @id @default(autoincrement())
+  name      String
+  phone     String
+  email     String
+  password  String
+  Company   Company @relation(fields: [companyId], references: [id])
+  companyId Int
+  Order     Order[]
+
+  @@unique([email, companyId])
+}
+
+model Product {
+  id          Int            @id @default(autoincrement())
+  name        String         @unique
+  description String
+  price       Decimal
+  images      ImageProduct[]
+  category    Category?      @relation(fields: [categoryId], references: [id])
+  categoryId  Int?
+  Company     Company        @relation(fields: [companyId], references: [id])
+  companyId   Int
+
+  Order   Order? @relation(fields: [orderId], references: [id])
+  orderId Int?
+}
+
+model ImageProduct {
+  id        Int     @id @default(autoincrement())
+  file_name String  @unique
+  Product   Product @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  Product   Product[]
+  Company   Company   @relation(fields: [companyId], references: [id])
+  companyId Int
+}
+
+model Order {
+  id        Int       @id @default(autoincrement())
+  date      DateTime
+  value     Decimal
+  status    String
+  Client    Client    @relation(fields: [clientId], references: [id])
+  Company   Company   @relation(fields: [companyId], references: [id])
+  Product   Product[]
+  companyId Int
+  clientId  Int
+}
