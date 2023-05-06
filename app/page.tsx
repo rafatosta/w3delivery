@@ -1,4 +1,4 @@
-import { Company } from "@prisma/client";
+import { Company } from "@/lib/company";
 
 async function getData() {
   const res = await fetch("http://localhost:3000/api/company", {
@@ -22,11 +22,23 @@ export default async function Home() {
           {data.map((company: Company) => {
             return (
               <a
-                key={`${company.slug}`}
-                href={`/${company.slug}`}
-                className="hover:text-[blue] hover:font-bold"
+                key={`${company?.slug}`}
+                href={`/${company?.slug}`}
+                className="hover:font-extrabold flex flex-row  items-center gap-4 p-4 rounded-xl"
+                style={{ backgroundColor: company?.settings?.secondaryColor }}
               >
-                {company.name} - {company.slug}
+                <img
+                  className="block h-12 w-12 rounded-full"
+                  src={`/images/${
+                    company?.settings?.imagePerfil
+                      ? company?.settings?.imagePerfil
+                      : "default_perfil.png"
+                  }`}
+                  alt="Your Company"
+                />
+                <div>
+                  {company?.name} - {company?.slug}
+                </div>
               </a>
             );
           })}

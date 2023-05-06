@@ -1,4 +1,5 @@
 import NavBar from "@/components/navbar";
+import Image from "next/image";
 
 async function getData(slug: string) {
   const res = await fetch(`http://localhost:3000/api/company/${slug}`, {
@@ -18,8 +19,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
   return (
     <div>
       <NavBar data={company} />
-      <p>{company.settings.primaryColor}</p>
-      <p> {company.name}</p>
     </div>
   );
 }
