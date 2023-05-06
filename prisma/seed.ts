@@ -14,6 +14,7 @@ async function run() {
   await prisma.product.deleteMany();
   await prisma.phone.deleteMany();
   await prisma.client.deleteMany();
+  await prisma.settings.deleteMany();
   await prisma.company.deleteMany();
 
   /* Empresa 1 */
@@ -58,8 +59,8 @@ async function run() {
           primaryColor: "#8c1c03",
           secondaryColor: "#f24c3d",
           tertiaryColor: "#f2b705",
-          imagePerfil: "",
-          imageBanner: "",
+          imagePerfil: "dictum_corp_perfil.jpg",
+          imageBanner: "dictum_corp_banner.jpg",
         },
       },
     },
@@ -115,8 +116,8 @@ async function run() {
       },
       settings: {
         create: {
-          primaryColor: "#8c1c03",
-          secondaryColor: "#f24c3d",
+          primaryColor: "#5f413e",
+          secondaryColor: "#73b25b",
           tertiaryColor: "#f2b705",
           imagePerfil: "",
           imageBanner: "",
@@ -143,8 +144,8 @@ async function run() {
       addressMap: "25.9914186752, -112.6303266816",
       settings: {
         create: {
-          primaryColor: "#8c1c03",
-          secondaryColor: "#f24c3d",
+          primaryColor: "#f2d2b6",
+          secondaryColor: "#bf925a",
           tertiaryColor: "#f2b705",
           imagePerfil: "",
           imageBanner: "",
