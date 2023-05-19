@@ -4,18 +4,11 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Company } from "@/lib/company";
 
-const navigation = [
-  { name: "Início", href: "/", current: true },
-  { name: "Promoções", href: "#", current: false },
-  { name: "Produtos", href: "#", current: false },
-  { name: "Pedidos", href: "#", current: false },
-];
-
 function classNames(...classes: String[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-function NavBar(props: { data: Company }) {
+export default function NavBar(props: { data: Company }) {
   const company = props.data;
 
   const BACKGROUND_COLOR = company?.settings?.primaryColor;
@@ -25,6 +18,13 @@ function NavBar(props: { data: Company }) {
       ? company?.settings?.imagePerfil
       : "default_perfil.png"
   }`;
+
+  const navigation = [
+    { name: "Início", href: `/${company?.slug}`, current: true },
+    { name: "Promoções", href: `/${company?.slug}/promocoes`, current: false },
+    { name: "Produtos", href: `/${company?.slug}/produtos`, current: false },
+    { name: "Pedidos", href: `/${company?.slug}/pedidos`, current: false },
+  ];
 
   return (
     <Disclosure as="nav" style={{ backgroundColor: BACKGROUND_COLOR }}>
@@ -178,5 +178,3 @@ function NavBar(props: { data: Company }) {
     </Disclosure>
   );
 }
-
-export default NavBar;
