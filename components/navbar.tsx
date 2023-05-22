@@ -1,8 +1,10 @@
 "use client";
 import { Fragment } from "react";
+import Link from "next/link";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Company } from "@/lib/company";
+import { usePathname } from "next/navigation";
 
 function classNames(...classes: String[]) {
   return classes.filter(Boolean).join(" ");
@@ -20,11 +22,13 @@ export default function NavBar(props: { data: Company }) {
   }`;
 
   const navigation = [
-    { name: "Início", href: `/${company?.slug}`, current: true },
-    { name: "Promoções", href: `/${company?.slug}/promocoes`, current: false },
-    { name: "Produtos", href: `/${company?.slug}/produtos`, current: false },
-    { name: "Pedidos", href: `/${company?.slug}/pedidos`, current: false },
+    { name: "Início", href: `/${company?.slug}` },
+    { name: "Promoções", href: `/${company?.slug}/promocoes` },
+    { name: "Produtos", href: `/${company?.slug}/produtos` },
+    { name: "Pedidos", href: `/${company?.slug}/pedidos` },
   ];
+
+  const pathname = usePathname();
 
   return (
     <Disclosure as="nav" style={{ backgroundColor: BACKGROUND_COLOR }}>
@@ -57,21 +61,24 @@ export default function NavBar(props: { data: Company }) {
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
+                  <div className="flex flex-row space-x-4 items-center justify-center">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current
+                          item.href === pathname
                             ? "bg-gray-900 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.current ? "page" : undefined}
+                        aria-current={
+                          item.href === pathname ? "page" : undefined
+                        }
                       >
-                        {item.name}
-                      </a>
+                        {" "}
+                        {item.name}{" "}
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -154,22 +161,24 @@ export default function NavBar(props: { data: Company }) {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
+            <div className="space-y-1 px-2 pb-3 pt-2 flex flex-col">
               {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
-                  )}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
+                <Link
+                key={item.name}
+                href={item.href}
+                className={classNames(
+                  item.href === pathname
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                  "rounded-md px-3 py-2 text-sm font-medium"
+                )}
+                aria-current={
+                  item.href === pathname ? "page" : undefined
+                }
+              >
+                {" "}
+                {item.name}{" "}
+              </Link>
               ))}
             </div>
           </Disclosure.Panel>
