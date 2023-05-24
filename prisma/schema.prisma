@@ -24,7 +24,6 @@ model Company {
   client      Client[]
   product     Product[]
   category    Category[]
-  order       Order[]
 }
 
 model Settings {
@@ -79,31 +78,27 @@ model Client {
   password  String
   Company   Company @relation(fields: [companyId], references: [id])
   companyId Int
-  Order     Order[]
 
   @@unique([email, companyId])
 }
 
 model Product {
-  id          Int            @id @default(autoincrement())
-  name        String         @unique
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
   description String
   price       Decimal
-  images      ImageProduct[]
-  category    Category?      @relation(fields: [categoryId], references: [id])
-  categoryId  Int?
-  Company     Company        @relation(fields: [companyId], references: [id])
+  imageSrc    String
+  imageAlt    String
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  Company     Company  @relation(fields: [companyId], references: [id])
   companyId   Int
-
-  Order   Order? @relation(fields: [orderId], references: [id])
-  orderId Int?
 }
 
 model ImageProduct {
-  id        Int     @id @default(autoincrement())
-  file_name String  @unique
-  Product   Product @relation(fields: [productId], references: [id])
-  productId Int
+  id       Int    @id @default(autoincrement())
+  imageSrc String @unique
+  imageAlt String
 }
 
 model Category {
@@ -112,16 +107,4 @@ model Category {
   Product   Product[]
   Company   Company   @relation(fields: [companyId], references: [id])
   companyId Int
-}
-
-model Order {
-  id        Int       @id @default(autoincrement())
-  date      DateTime
-  value     Decimal
-  status    String
-  Client    Client    @relation(fields: [clientId], references: [id])
-  Company   Company   @relation(fields: [companyId], references: [id])
-  Product   Product[]
-  companyId Int
-  clientId  Int
 }
